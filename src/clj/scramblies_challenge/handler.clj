@@ -17,6 +17,7 @@
    [:meta {:charset "utf-8"}]
    [:meta {:name "viewport"
            :content "width=device-width, initial-scale=1"}]
+   (include-css "https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css")
    (include-css (if (env :dev) "/css/site.css" "/css/site.min.css"))])
 
 (defn loading-page []
@@ -42,10 +43,6 @@
   (reitit-ring/ring-handler
     (reitit-ring/router
       [["/" {:get {:handler index-handler}}]
-       ["/items"
-        ["" {:get {:handler index-handler}}]
-        ["/:item-id" {:get {:handler index-handler
-                            :parameters {:path {:item-id int?}}}}]]
        ["/about" {:get {:handler index-handler}}]
        ["/api"
         ["/v1"
