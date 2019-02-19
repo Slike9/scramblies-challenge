@@ -29,9 +29,11 @@
 
 (defn request-scramble
   []
+  (reset! result "")
   (ajax/GET "/api/v1/scramble" {:params {:str1 @str1, :str2 @str2}
                                 :response-format (ajax.edn/edn-response-format)
-                                :handler #(reset! result (:result %))}))
+                                :handler #(reset! result (:result %))
+                                :error-handler #(reset! result "Server is unavailable or returned an error")}))
 
 (defn str-input [label value]
   [:div {:class "form-group row"}
@@ -65,9 +67,9 @@
       [:div {:class "row"}
        [:div {:class "col-sm-10 offset-sm-2"}
         [:button
-         {:type "button"
+         {:type "submit"
           :class "btn btn-primary"
-          :on-click request-scramble}
+          :on-click #(do (.preventDefault %) (request-scramble))}
          "Scramble?"]]]]]))
 
 (defn about-page []
